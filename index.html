@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jack Spencer ~ Portfolio</title>
+  <style>
+    :root{
+      --bg1: #0a0d1a;
+      --bg2: #1a2040;
+      --bg3: #2d3561;
+      --glass: rgba(255,255,255,0.12);
+      --glass-hover: rgba(255,255,255,0.18);
+      --border: rgba(255,255,255,0.25);
+      --border-hover: rgba(255,255,255,0.35);
+      --text: #e8f2ff;
+      --text-muted: #b8c8d8;
+      --accent: #6fa8ff;
+      --accent-bright: #8bb8ff;
+      --shadow: rgba(0,0,0,0.4);
+      --glow: rgba(111, 168, 255, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body{
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: 
+        radial-gradient(circle at 80% 20%, rgba(111, 168, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(45, 53, 97, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 60% 60%, rgba(26, 32, 64, 0.6) 0%, transparent 50%),
+        linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 50%, var(--bg3) 100%);
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      animation: backgroundShift 20s ease-in-out infinite;
+    }
+
+    @keyframes backgroundShift {
+      0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+      50% { filter: hue-rotate(10deg) brightness(1.1); }
+    }
+
+    #app{
+      position: fixed; 
+      inset: 0; 
+      width: 100vw; 
+      height: 100vh; 
+      display: block; 
+      z-index: 0;
+    }
+
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.3; }
+      50% { transform: translateY(-20px) translateX(10px) scale(1.5); opacity: 0.8; }
+    }
+
+    .header-img-container {
+      position: fixed;
+      top: 0; 
+      left: 0; 
+      width: 100vw; 
+      height: 300px;
+      z-index: 1;
+      pointer-events: none;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .header-img {
+      width: 100vw;
+      max-width: 100vw;
+      height: 300px;
+      object-fit: cover;
+      object-position: top center;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.1) 80%, rgba(0,0,0,0) 100%);
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.1) 80%, rgba(0,0,0,0) 100%);
+    }
+
+    .hud{
+      position: fixed; 
+      inset: 0; 
+      pointer-events: none; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      z-index: 2;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .hud > * { pointer-events: auto; }
+
+    #center-img {
+      width: 120px;
+      height: 240px;
+      border: 3px solid var(--accent);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 32px var(--shadow), 0 0 20px var(--glow);
+      animation: profilePulse 4s ease-in-out infinite;
+    }
+
+    @keyframes profilePulse {
+      0%, 100% { box-shadow: 0 8px 32px var(--shadow), 0 0 20px var(--glow); }
+      50% { box-shadow: 0 12px 40px var(--shadow), 0 0 30px var(--glow); }
+    }
+
+    #center-img:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 16px 48px var(--shadow), 0 0 40px var(--glow);
+    }
+
+    .card{
+      backdrop-filter: blur(16px) saturate(130%);
+      background: var(--glass);
+      border: 1px solid var(--border);
+      padding: 24px 32px;
+      border-radius: 24px;
+      box-shadow: 0 12px 40px var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: 'JetBrains Mono', monospace;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 60px var(--shadow);
+      background: var(--glass-hover);
+      border-color: var(--border-hover);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .sidebox{
+      position: fixed;
+      top: 50%;
+      right: 24px;
+      transform: translateY(-50%);
+      width: 280px;
+      backdrop-filter: blur(16px) saturate(130%);
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 12px 40px var(--shadow);
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      z-index: 2;
+      transition: all 0.3s ease;
+      animation: slideInRight 0.8s ease-out;
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateY(-50%) translateX(100px); opacity: 0; }
+      to { transform: translateY(-50%) translateX(0); opacity: 1; }
+    }
+
+    .sidebox:hover {
+      background: var(--glass-hover);
+      border-color: var(--border-hover);
+      box-shadow: 0 16px 48px var(--shadow);
+    }
+
+    .sidebox a{
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .sidebox a:hover {
+      color: var(--accent-bright);
+    }
+
+    .sidebox a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .sidebox a:hover::after {
+      width: 100%;
+    }
+
+    .left-stack{
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 320px;
+      z-index: 2;
+      animation: slideInLeft 0.8s ease-out;
+    }
+
+    @keyframes slideInLeft {
+      from { transform: translateX(-100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .aboutbox, .canvasbox{
+      backdrop-filter: blur(16px) saturate(130%);
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 12px 40px var(--shadow);
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .aboutbox::before, .canvasbox::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .aboutbox:hover, .canvasbox:hover {
+      background: var(--glass-hover);
+      border-color: var(--border-hover);
+      box-shadow: 0 16px 48px var(--shadow);
+    }
+
+    .aboutbox:hover::before, .canvasbox:hover::before {
+      opacity: 1;
+    }
+
+    .canvasbox{
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .canvasbox canvas{
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      transition: transform 0.3s ease;
+    }
+
+    .canvasbox:hover canvas {
+      transform: scale(1.02);
+    }
+
+    #socials-btn {
+      margin-top: 16px;
+      padding: 12px 32px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      color: var(--accent);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: block;
+      width: 100%;
+      max-width: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #socials-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    #socials-btn:hover {
+      background: var(--glass-hover);
+      color: var(--accent-bright);
+      border-color: var(--accent);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 20px var(--glow);
+      transform: translateY(-2px);
+    }
+
+    #socials-btn:hover::before {
+      transform: translateX(100%);
+    }
+
+    #socials-btn:active {
+      transform: translateY(0);
+    }
+
+    .typing-text {
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typing 3s steps(30) 1s both;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    
+    @media (max-width: 768px) {
+      .left-stack, .sidebox {
+        position: static;
+        width: auto;
+        margin: 20px;
+      }
+      
+      .hud {
+        position: static;
+        height: auto;
+        padding: 20px;
+      }
+      
+      body {
+        overflow-y: auto;
+      }
+      
+      .header-img-container {
+        position: relative;
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+
+  <div class="header-img-container">
+    <img class="header-img" id="custom-header-img" src="./resources/images/mandelbrot.png" alt="Header Image"/>
+  </div>
+
+  <div class="hud">
+    <img id="center-img" src="./resources/sprites/hoodkid.png" alt="Profile Image"/>
+    <div class="card">
+      <div class="typing-text">
+jack ~ asmtilde // dunno what to put here
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebox">
+    <strong style="color: var(--accent);">Projects</strong><br><br>
+    → <a href="https://watermelonkatana.com">WatermelonKatana</a><br>
+    → <a href="./projects/orion.html">Orion Public Transit</a><br>
+    → <a href="./games/cubedood.html">CubeDood</a><br>
+  </div>
+  <br>
+
+  <div class="sidebox" style="top: auto; bottom: 24px;">
+    <div class="canvasbox" style="margin: 0; padding: 16px; background: var(--glass); border: 1px solid var(--border);">
+      <canvas id="customCanvas"></canvas>
+    </div>
+  </div>
+
+  <div class="left-stack">
+    <div class="aboutbox">
+<strong style="color: var(--accent);">About Me</strong>
+<br>
+Jack // asmtilde
+<br>
+present day; present time
+<br><br>
+i mainly work on c projects, occsionally c++, and sometimes make websites and games using html
+<br>
+linux = future of internet society and open source is the future of software development
+<br>
+no rapid advancement of artifical intelligence will ever replace the human touch
+<br>
+music serves as a universal language that connects souls beyond words
+<br>
+otherworldly stories and adventures awaits listening to my songs
+<br>
+worldview bird's eye view sit between wavering lines of happiness and sadness
+<br>
+feel like i might be slipping back into the void
+<br>
+programming it is i guess
+<br>
+    </div>
+
+    <div class="canvasbox">
+      <canvas id="myCanvas"></canvas>
+    </div>
+
+    <button id="socials-btn">
+      🌐 Connect With Me
+    </button>
+  </div>
+
+<script src="./resources/js/cubemazeai.js"></script>
+<script>
+  function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 50;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 8 + 's';
+      particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+      particlesContainer.appendChild(particle);
+    }
+  }
+
+  const images = [
+    "./resources/sprites/hoodkid.png",
+    "./resources/sprites/grasping_shade.png"
+  ];
+  let currentImg = 0;
+  const centerImg = document.getElementById("center-img");
+  
+  function switchImage() {
+    centerImg.style.transform = 'scale(0.8) rotate(180deg)';
+    setTimeout(() => {
+      currentImg = (currentImg + 1) % images.length;
+      centerImg.src = images[currentImg];
+      centerImg.style.transform = 'scale(1) rotate(0deg)';
+    }, 150);
+  }
+  
+  centerImg.onclick = switchImage;
+  
+  document.addEventListener("keydown", (event) => {
+    if(event.key === " ") {
+      event.preventDefault();
+      switchImage();
+    }
+  });
+
+  function setHeaderImage(src) {
+    const headerImg = document.getElementById("custom-header-img");
+    headerImg.style.opacity = '0';
+    setTimeout(() => {
+      headerImg.src = src;
+      headerImg.style.opacity = '0.6';
+    }, 300);
+  }
+
+  function initCanvas() {
+    const canvas = document.getElementById('customCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    
+    let time = 0;
+    
+    function animate() {
+      ctx.fillStyle = 'rgba(14, 16, 35, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.strokeStyle = '#6fa8ff';
+      ctx.lineWidth = 2;
+      
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        const x = canvas.width / 2 + Math.sin(time * 0.01 + i) * (50 + i * 20);
+        const y = canvas.height / 2 + Math.cos(time * 0.015 + i) * (30 + i * 15);
+        const radius = 10 + Math.sin(time * 0.02 + i) * 5;
+        
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      
+      time++;
+      requestAnimationFrame(animate);
+    }
+    
+    animate();
+  }
+
+  function initCustomCanvas() {
+    const canvas = document.getElementById('customCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+
+  document.getElementById('socials-btn').addEventListener('click', function() {
+    window.location.href = './socials.html';
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    createParticles();
+    initCanvas();
+    initCustomCanvas();
+  });
+
+  window.addEventListener('resize', function() {
+    const canvas = document.getElementById('myCanvas');
+    const customCanvas = document.getElementById('customCanvas');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    customCanvas.width = customCanvas.offsetWidth;
+    customCanvas.height = customCanvas.offsetHeight;
+  });
+</script>
+</body>
+</html>
