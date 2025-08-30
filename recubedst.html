@@ -1,0 +1,292 @@
+<!-- CubeDood: ReCubed Sound Test -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>CubeDood: ReCubed | SoundTest</title>
+	</head>
+	<style>
+		canvas {
+		display: block;
+		margin: auto;
+		border-color:white;
+		border-style:solid;
+		}
+		body {
+		background-color:black;
+		}
+	</style>
+	<body>
+		<canvas id="gameCanvas" width="800" height="640"></canvas>
+	</body>
+	<script>
+		const ctx = document.getElementById("gameCanvas").getContext("2d");
+		
+		const width = 800;
+		const height = 640;
+		
+		const st_music = [
+            {
+                name: "The Roaring Years",
+                description: "The original theme song for CubeDood in 'The Memory Snatcher'",
+                artist: "pinegroove",
+                file: "resources/sound/theroaringyears.mp3"
+            },
+            {
+                name: "Old Times",
+                description: "A melody of deception, and obstacles to overcome.",
+                artist: "Con",
+                file: "resources/sound/oldtimes.mp3"
+            },
+            {
+                name: "The New Twenties",
+                description: "A mysterious and adventurous feeling tune for moving forward.",
+                artist: "pinegroove",
+                file: "resources/sound/thenewtwenties.mp3"
+            },
+            {
+                name: "Cabaret Swing",
+                description: "A jazz tune representing the atmosphere of difficulty.",
+                artist: "pinegroove",
+                file: "resources/sound/cabaretswing.mp3"
+            },
+            {
+                name: "Fast Jazz",
+                description: "The default level song, and a fast-paced jazz tune.",
+                artist: "Mezzosound",
+                file: "resources/sound/fastjazz.mp3"
+            },
+            {
+                name: "Mafia Tricks",
+                description: "The settings music, still a banger though!",
+                artist: "HD Studio",
+                file: "resources/sound/mafiatricks.mp3"
+            },
+            {
+                name: "Retro Vintage Swing Jazz Music",
+                description: "The default level song for the harder stages in CubeDood.",
+                artist: "EITAN EPSTEIN MUSIC",
+                file: "resources/sound/retrovintageswingjazzmusic.mp3"
+            },
+            {
+                name: "Coffee Time",
+                description: "The villain song for CubeTop.",
+                artist: "Monument Music",
+                file: "resources/sound/coffeetime.mp3"
+            },
+            {
+                name: "Drunken Jazz",
+                description: "CubeTop's ReCubed theme song, and his boss theme.",
+                artist: "Andy Warner",
+                file: "resources/sound/drunkenjazz.mp3"
+            },
+            {
+                name: "Pump That Swing",
+                description: "A calming cutscene song.",
+                artist: "pinegroove",
+                file: "resources/sound/pumpthatswing.mp3"
+            },
+            {
+                name: "Bon-Ton Swing",
+                description: "Another calming cutscene song.",
+                artist: "pinegroove",
+                file: "resources/sound/bontonswing.mp3"
+            },
+            {
+                name: "Come Jive With Me",
+                description: "A energetic jazzy boss tune for boss battles.",
+                artist: "Jake Schneider",
+                file: "resources/sound/comejivewithme.mp3"
+            },
+            {
+                name: "Bizarre Story",
+                description: "Another energetic jazzy boss tune for boss battles.",
+                artist: "Dam_Hall",
+                file: "resources/sound/bizarrestory.mp3"
+            },
+            {
+                name: "Ring Up The Curtain",
+                description: "Some of the hardest levels in CubeDood have this song.",
+                artist: "pinegroove",
+                file: "resources/sound/ringupthecurtain.mp3"
+            },
+            {
+                name: "Boogie Pepper",
+                description: "The final boss theme for CubeDood.",
+                artist: "Music Unlimited",
+                file: "resources/sound/boogiepepper.mp3"
+            },
+            {
+                name: "Feel The Rhythm",
+                description: "Bonus level music.",
+                artist: "mezzosound",
+                file: "resources/sound/feeltherhythm.mp3"
+            },
+            {
+                name: "Monsieur Louis",
+                description: "The credits music for CubeDood.",
+                artist: "Soniq Branding.",
+                file: "resources/sound/monsieurlouis.mp3"
+            },
+            {
+                name: "Can't Stop",
+                description: "Theme song for Cubie",
+                artist: "APmuse",
+                file: "resources/sound/cantstop.mp3"
+            },
+            {
+                name: "The Jazz Drummer",
+                description: "Boss theme for Cubie",
+                artist: "Jake Schneider",
+                file: "resources/sound/thejazzdrummer.mp3"
+            },
+            {
+                name: "So Much Fun",
+                description: "Bonus level music... again.",
+                artist: "RoundnoteAudio",
+                file: "resources/sound/somuchfun.mp3"
+            },
+            {
+                name: ""
+            }
+		];
+		
+		let currentIndex = 0;
+		let currentSong = new Audio(st_music[currentIndex].file);
+		let songDuration = 0;
+		let progressBarWidth = 400;
+		
+		var lastUpdateTime = performance.now();
+		var deltaTime = 0;
+		var fpsInterval = 1000 / 60;
+		
+		const logo = new Image();
+		logo.src = "assets/game/logo.png";
+		
+		const flag = new Image();
+		flag.src = "assets/game/flag.png";
+		
+		document.addEventListener("keydown", function(event) {
+		    if (event.code === "ArrowUp") {
+		        currentIndex = (currentIndex - 1 + st_music.length) % st_music.length;
+		        updateSelectedSong();
+		    } else if (event.code === "ArrowDown") {
+		        currentIndex = (currentIndex + 1) % st_music.length;
+		        updateSelectedSong();
+		    } else if (event.code === "Space") {
+		        playSelectedSong();
+		    }
+		});
+		
+		function updateSelectedSong() {
+		    currentSong.pause();
+		    currentSong.currentTime = 0; 
+		    currentSong = new Audio(st_music[currentIndex].file); 
+		
+		  currentSong.addEventListener('loadedmetadata', () => {
+		      songDuration = currentSong.duration; 
+		  });
+		
+		    currentSong.play();
+		}
+		
+		function playSelectedSong() {
+		    if (!currentSong.paused) {
+		        currentSong.pause();
+		    } else {
+		        currentSong.play(); 
+		    }
+		}
+		
+		function update()
+		{
+			requestAnimationFrame(update);
+		
+		var currentTime = performance.now();
+		var elapsed = currentTime - lastUpdateTime;
+		
+		deltaTime += elapsed;
+		draw();
+		
+		while (deltaTime >= fpsInterval)
+		{
+			deltaTime -= fpsInterval;
+		}
+		
+		lastUpdateTime = currentTime;
+		}
+		
+		function draw()
+		{
+		draw_backgroundColor("orange");
+		
+		    ctx.drawImage(flag, width / 3 + 67, 30, 32, 32);
+		ctx.drawImage(logo, width / 3, 50, 261, 76);
+		
+		    draw_cubedood(width / 3 + 260, 80);
+		    draw_text("ReCubed", width / 3 + 133, 140, "30");
+		
+		    draw_text("Track " + currentIndex, width / 5, 200, "20");
+		    draw_text(st_music[currentIndex].name, width / 5, 240, "30");
+		    draw_text(st_music[currentIndex].description, width / 5, 270, "15");
+		
+		    draw_text("Controls: Up / Down Arrows keys to change the track, Space to play/pause", width / 5, 600, "15");
+		
+		    draw_progress_bar(width / 5, 310, progressBarWidth, 20); 
+		}
+		
+		function draw_backgroundColor(color)
+		{
+		ctx.fillStyle = color;
+		ctx.fillRect(0, 0, 800, 640);
+		}
+		
+		function draw_cubedood(x, y)
+		  {
+		    ctx.fillStyle = "white";
+		    ctx.beginPath();
+		    ctx.rect(x, y, 32, 32);
+		    ctx.fill();
+		    ctx.closePath();
+		
+		    ctx.fillStyle = "black";
+		    ctx.fillRect(x + 8, y + 8, 8, 8);
+		    ctx.fillRect(x + 24, y + 8, 8, 8);
+		  }
+		
+		function draw_text(text, x, y, size)
+		{
+		  ctx.fillStyle = "black";
+		  ctx.font = size + "px Roboto";
+		  ctx.fillText(text, x, y);
+		}
+		
+		function draw_progress_bar(x, y, width, height) {
+		    let progress = currentSong.currentTime / songDuration;
+		  
+		    ctx.fillStyle = "gray";
+		    ctx.fillRect(x, y, width, height);
+		
+		    ctx.fillStyle = "white";
+		    ctx.fillRect(x, y, progress * width, height);
+		
+		    draw_text(format_time(currentSong.currentTime) + " / " + format_time(songDuration), x + 10, y - 10);
+		}
+		
+		function format_time(seconds) {
+		    let mins = Math.floor(seconds / 60);
+		    let secs = Math.floor(seconds % 60);
+		    return mins + ":" + (secs < 10 ? "0" : "") + secs;
+		}
+		
+		function draw_image(image, x, y, width, height)
+		{
+		ctx.drawImage(image, x, y, width, height);
+		}
+		
+		requestAnimationFrame(update);
+		updateSelectedSong();
+			
+	</script>
+</html>

@@ -1,9 +1,6 @@
-// ai_platformer.js
-
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
-// --- Config ---
 const CELL = 20;
 const ROWS = 10;
 const COLS = 14;
@@ -11,25 +8,21 @@ const COLS = 14;
 canvas.width = COLS * CELL;
 canvas.height = ROWS * CELL;
 
-// --- Tile types ---
 const AIR = 0;
 const BLOCK = 1;
 const LAVA = 2;
 const FLAG = 3;
 
-// --- Game state ---
 let grid;
 let player;
-let memory = {}; // persistent memory
+let memory = {};
 let levelTimer = 0;
 const LEVEL_TIMEOUT = 50;
 
-// --- Utilities ---
 function stateKey(px, py) {
   return px + "," + py;
 }
 
-// BFS to check if flag is reachable
 function isBeatable(px, py) {
   const visited = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
   const queue = [{ x: px, y: py }];
@@ -62,10 +55,9 @@ function isBeatable(px, py) {
     }
   }
 
-  return false; // flag not reachable
+  return false;
 }
 
-// --- Generate Level ---
 function generateLevel() {
   let beatable = false;
 
@@ -94,7 +86,6 @@ function generateLevel() {
   levelTimer = 0;
 }
 
-// --- AI Step ---
 function step() {
   levelTimer++;
 
@@ -155,7 +146,6 @@ function step() {
   player.y = ny;
 }
 
-// --- Draw ---
 function draw() {
   ctx.fillStyle = "orange";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -175,12 +165,10 @@ function draw() {
   ctx.fillRect(player.x * CELL, player.y * CELL, CELL, CELL);
 }
 
-// --- Game loop ---
 function gameLoop() {
   step();
   draw();
 }
 
-// --- Init ---
 generateLevel();
 setInterval(gameLoop, 8);
