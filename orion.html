@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion Public Transit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: #000;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path fill='white' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93v-3.79c-3.14-.5-6.03-2.07-8.33-4.37l2.84-2.84c.83.83 1.87 1.4 3 1.63V7.07c-2.35-.58-4.73-1.61-6.73-3.61l-1.42 1.42c2.09 2.09 4.88 3.55 7.9 4.19v2.18c-3.02-.64-5.81-2.1-7.9-4.19l-1.42 1.42c2 2 4.38 3.03 6.73 3.61v4.73c-1.39-1.39-2.22-3.15-2.22-5.06h-2c0 2.47 1.05 4.7 2.76 6.31v1.62c0 1.2.98 2.18 2.18 2.18s2.18-.98 2.18-2.18v-1.62c1.71-1.61 2.76-3.84 2.76-6.31h-2c0 1.91-.83 3.67-2.22 5.06zm-1-12.93v-3.79c1.97-.5 4.07-.5 6.1-.06-.57.57-1.12 1.05-1.74 1.48v2.12c-2.09-.34-4.22-.34-6.31 0v-2.12c.7-.43 1.48-.96 2.3-1.63z'/></svg>"), default;
+        }
+
+        .star-field {
+            background: #000;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 100px 140px, #eee, rgba(0,0,0,0));
+            background-size: 150px 150px;
+            animation: move-stars 200s linear infinite;
+        }
+
+        @keyframes move-stars {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 100% 100%;
+            }
+        }
+
+        .glow-text {
+            text-shadow:
+                0 0 10px rgba(128, 0, 128, 0.7),
+                0 0 20px rgba(128, 0, 128, 0.7),
+                0 0 30px rgba(128, 0, 128, 0.7),
+                0 0 40px rgba(128, 0, 128, 0.7);
+            animation: pulse-glow 3s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from { text-shadow: 0 0 10px #800080; }
+            to { text-shadow: 0 0 20px #ff00ff, 0 0 30px #800080; }
+        }
+
+        .glitch {
+            position: relative;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00c1;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(2px, 9999px, 99px, 0); }
+            5% { clip: rect(106px, 9999px, 78px, 0); }
+            10% { clip: rect(80px, 9999px, 20px, 0); }
+            15% { clip: rect(12px, 9999px, 122px, 0); }
+            20% { clip: rect(69px, 9999px, 102px, 0); }
+            25% { clip: rect(100px, 9999px, 109px, 0); }
+            30% { clip: rect(110px, 9999px, 122px, 0); }
+            35% { clip: rect(60px, 9999px, 90px, 0); }
+            40% { clip: rect(130px, 9999px, 80px, 0); }
+            45% { clip: rect(70px, 9999px, 110px, 0); }
+            50% { clip: rect(20px, 9999px, 50px, 0); }
+            55% { clip: rect(110px, 9999px, 120px, 0); }
+            60% { clip: rect(10px, 9999px, 40px, 0); }
+            65% { clip: rect(80px, 9999px, 100px, 0); }
+            70% { clip: rect(30px, 9999px, 70px, 0); }
+            75% { clip: rect(120px, 9999px, 130px, 0); }
+            80% { clip: rect(50px, 9999px, 80px, 0); }
+            85% { clip: rect(90px, 9999px, 110px, 0); }
+            90% { clip: rect(40px, 9999px, 60px, 0); }
+            95% { clip: rect(100px, 9999px, 120px, 0); }
+            100% { clip: rect(10px, 9999px, 30px, 0); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(120px, 9999px, 130px, 0); }
+            5% { clip: rect(50px, 9999px, 80px, 0); }
+            10% { clip: rect(90px, 9999px, 110px, 0); }
+            15% { clip: rect(40px, 9999px, 60px, 0); }
+            20% { clip: rect(100px, 9999px, 120px, 0); }
+            25% { clip: rect(10px, 9999px, 30px, 0); }
+            30% { clip: rect(2px, 9999px, 99px, 0); }
+            35% { clip: rect(106px, 9999px, 78px, 0); }
+            40% { clip: rect(80px, 9999px, 20px, 0); }
+            45% { clip: rect(12px, 9999px, 122px, 0); }
+            50% { clip: rect(69px, 9999px, 102px, 0); }
+            55% { clip: rect(100px, 9999px, 109px, 0); }
+            60% { clip: rect(110px, 9999px, 122px, 0); }
+            65% { clip: rect(60px, 9999px, 90px, 0); }
+            70% { clip: rect(130px, 9999px, 80px, 0); }
+            75% { clip: rect(70px, 9999px, 110px, 0); }
+            80% { clip: rect(20px, 9999px, 50px, 0); }
+            85% { clip: rect(110px, 9999px, 120px, 0); }
+            90% { clip: rect(10px, 9999px, 40px, 0); }
+            95% { clip: rect(80px, 9999px, 100px, 0); }
+            100% { clip: rect(30px, 9999px, 70px, 0); }
+        }
+
+        .cta-button {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            background-image: linear-gradient(45deg, #FF6B6B, #556270);
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+        }
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.8);
+        }
+        
+        .glow-logos svg {
+            transition: filter 0.3s ease;
+        }
+        .glow-logos svg:hover {
+            filter: drop-shadow(0 0 10px #00ff00) drop-shadow(0 0 20px #00ff00);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center relative overflow-hidden star-field">
+
+    <main class="w-full max-w-4xl p-8 md:p-12 space-y-12 z-10 flex flex-col items-center">
+        
+        <div class="text-center">
+            <h1 class="text-5xl md:text-8xl font-bold tracking-tight mb-4 glitch glow-text" data-text="Orion Public Transit">
+                Orion Public Transit
+            </h1>
+        </div> 
+
+        <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8 w-full max-w-md">
+            <a href="./index.html" class="w-full md:w-1/2 p-4 text-center rounded-lg shadow-lg font-bold uppercase tracking-wider text-gray-900 cta-button">
+                Back to Home
+            </a>
+            
+            <a href="https://github.com/asmtilde/orion-public-transit" target="_blank" class="w-full md:w-1/2 p-4 text-center rounded-lg shadow-lg font-bold uppercase tracking-wider text-white border-2 border-gray-600 hover:border-purple-400 transition-colors">
+                GitHub
+            </a>
+        </div>
+        
+    </main>
+
+    <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center p-4">
+        <div class="bg-gray-800 p-8 rounded-lg shadow-2xl border border-gray-700 max-w-sm w-full space-y-4">
+            <p id="modal-text" class="text-center text-lg font-inter text-white"></p>
+            <button id="modal-close" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors">
+                Close
+            </button>
+        </div>
+    </div>
+</body>
+</html>
